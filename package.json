@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node backend/server.js",
     "dev": "nodemon backend/server.js",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false && npm install --prefix frontend && npm run build --prefix frontend"
+    "build": "react-scripts build"
   },
   "author": "",
   "license": "ISC",
@@ -25,6 +25,7 @@
     "mongoose": "^8.2.0",
     "nodemailer": "^6.9.11",
     "nodemon": "^3.1.0",
+    "path": "^0.12.7",
     "react-icons": "^5.0.1",
     "stripe": "^14.21.0",
     "validator": "^13.11.0",
