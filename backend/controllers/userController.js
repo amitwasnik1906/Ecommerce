@@ -3,10 +3,17 @@ const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const User = require("../models/userModel");
 const sendToken = require("../utils/jwtToken");
 const sendEmail = require("../utils/sendEmail.js");
-const Product = require("../models/productModel");
+const crypto = require("crypto");
+const cloudinary = require("cloudinary");
 
 // Register a User
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
+  const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+    folder: "avatars",
+    width: 150,
+    crop: "scale",
+  });
+
   const { name, email, password } = req.body;
 
   const user = await User.create({
@@ -14,8 +21,8 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
     email,
     password,
     avatar: {
-      public_id: "this is a sample id",
-      url: "profile pic URL",
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
     },
   });
 
@@ -169,7 +176,24 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
     email: req.body.email,
   };
 
-  // add cloudinary later
+  if (req.body.avatar !== "") {
+    const user = await User.findById(req.user.id);
+
+    const imageId = user.avatar.public_id;
+
+    await cloudinary.v2.uploader.destroy(imageId);
+
+    const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+      folder: "avatars",
+      width: 150,
+      crop: "scale",
+    });
+
+    newUserData.avatar = {
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
+    };
+  }
 
   const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
     new: true,
@@ -231,15 +255,17 @@ exports.updateUserRole = catchAsyncErrors(async (req, res, next) => {
 exports.DeleteUser = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findById(req.params.id);
 
-  // we will remove cloudinary later
-
   if (!user) {
-    return next(new ErrorHandler(`User does not exists`));
+    return next(
+      new ErrorHandler(`User does not exists with id: ${req.params.id}`, 400)
+    );
   }
 
-  console.log(user);
+  const imageId = user.avatar.public_id;
 
-  await user.remove();
+  await cloudinary.v2.uploader.destroy(imageId);
+
+  await User.findByIdAndDelete(req.params.id)
 
   res.status(200).json({
     success: true,

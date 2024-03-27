@@ -52,11 +52,11 @@ exports.getSingleOrder = catchAsyncErrors(async (req, res, next) => {
 
 // Get logged in user Orders
 exports.myOrders = catchAsyncErrors(async (req, res, next) => {
-  const order = await Order.find({ user: req.user._id });
+  const orders = await Order.find({ user: req.user._id });
 
   res.status(200).json({
     success: true,
-    order,
+    orders,
   });
 });
 
@@ -89,13 +89,16 @@ exports.updateOrderStatus = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("You have already delivered this order", 400));
   }
 
-  order.orderItems.forEach(async (o) => {
-    await updateStock(o.product, o.quantity);
-  });
+  if (req.body.status === "Shipped") {
+    order.orderItems.forEach(async (o) => {
+      await updateStock(o.product, o.quantity);
+    });
+  }
 
   order.orderStatus = req.body.status;
 
   if (req.body.status === "Delivered") {
+    order.paymentInfo.status = "succeeded";
     order.deliveredAt = Date.now();
   }
 
@@ -121,7 +124,7 @@ exports.deleteOrder = catchAsyncErrors(async (req, res, next) => {
   if (!order) {
     return next(new ErrorHandler("Order not found with this Id", 404));
   }
-//   await order.remove();
+  //   await order.remove();
 
   await Order.findByIdAndDelete(req.params.id);
 

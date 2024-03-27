@@ -1,0 +1,21 @@
+.notAvailable{
+    margin: auto;
+    text-align: center;
+    padding: 10vmax;
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.notAvailable>svg{
+    font-size: 10vmax;
+    color: tomato;
+}
+
+.notAvailable>h1{
+    font-size: 30px;
+    margin-top: 20px;
+}

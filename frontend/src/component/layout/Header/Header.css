@@ -1,0 +1,74 @@
+.speedDial {
+    position: fixed;
+    right: 3vmax;
+    top: 2vmax;
+}
+
+.speedDialIcon {
+    width: 56px;
+    height: 56px;
+    border-radius: 100%;
+}
+
+.LoginSignUpBtn {
+    border: none;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.450);
+    position: fixed;
+    right: 30px;
+    top: 2vmax;
+    padding: 15px 20px;
+    font-weight: 600;
+    font-size: large;
+    border-radius: 15px;
+    z-index: 11;
+    transition: all 0.5s;
+}
+
+.LoginSignUpBtn:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.540);
+}
+
+.search {
+    background-color: rgba(0, 0, 0, 0.450);
+    color: white;
+    padding: 6px;
+    border-radius: 15px;
+    width: 40px;
+    position: fixed;
+    right: 140px;
+    top: 2vmax;
+    transition: all 0.5s;
+    z-index: 11;
+}
+
+.search:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.540);
+}
+
+@media screen and (max-width: 600px) {
+    .search {
+        width: 40px;
+        padding: 6px;
+        right: 2vmax;
+        top: 9vmax;
+    }
+
+    .speedDial {
+        position: fixed;
+        right: 2vmax;
+        top: 2vmax;
+    }
+
+    .speedDialIcon {
+        width: 50px;
+        height: 50px;
+        border-radius: 100%;
+    }
+
+    .LoginSignUpBtn{
+        right: 2vmax;
+    }
+}
