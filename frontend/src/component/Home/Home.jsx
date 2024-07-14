@@ -42,7 +42,7 @@ const Home = () => {
 
                     <div className='container' id='container'>
                         {
-                            products && products.map((product) =>
+                            products && products?.map((product) =>
                                 <ProductCard product={product} key={product.name}/>
                             )
                         }

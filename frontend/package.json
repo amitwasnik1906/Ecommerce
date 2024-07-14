@@ -58,7 +58,7 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://10.40.13.166:4000",
+  "proxy": "http://10.40.13.166:5000",
   "devDependencies": {
     "react-alert-template-basic": "^1.0.2"
   }
